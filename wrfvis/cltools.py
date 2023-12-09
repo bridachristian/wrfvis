@@ -7,7 +7,7 @@ November 2023
 
 import sys
 import webbrowser
-
+import os 
 import wrfvis
 
 HELP = """wrfvis_gridcell: Visualization of WRF output at a single selected grid cell.
@@ -51,11 +51,17 @@ def gridcell(args):
         lon = float(args[args.index('-l') + 1])
         lat = float(args[args.index('-l') + 2])
         zagl = float(args[args.index('-l') + 3])
-        html_path = wrfvis.write_html(param, lon, lat, zagl)
-        if '--no-browser' in args:
-            print('File successfully generated at: ' + html_path)
+        
+        if os.path.exists(wrfvis.cfg.wrfout):
+            html_path = wrfvis.write_html(param, lon, lat, zagl)
+            if '--no-browser' in args:
+                print('File successfully generated at: ' + html_path)
+            else:
+                webbrowser.get().open_new_tab('file://' + html_path)
         else:
-            webbrowser.get().open_new_tab('file://' + html_path)
+            raise FileNotFoundError("Error: 'wrfout' file not found.")
+            #print FileNotFoundError("Error: 'wrfout' file not found.")
+        
     else:
         print('wrfvis_gridcell: command not understood. '
               'Type "wrfvis_gridcell --help" for usage information.')
