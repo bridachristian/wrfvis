@@ -1,7 +1,7 @@
 """ Configuration module containing settings and constants. """
 import os
 
-wrfout = 'test/WRF_output_project.nc'
+wrfout = 'ffff/WRF_output_project.nc'
 
 # location of data directory
 pkgdir = os.path.dirname(__file__)
