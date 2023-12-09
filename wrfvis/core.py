@@ -32,7 +32,6 @@ def get_wrf_timeseries(param, lon, lat, zagl):
     wrf_hgt: xarray DataArray
         WRF topography
     """
-
     with xr.open_dataset(cfg.wrfout) as ds:
         # find nearest grid cell
         ngcind, ngcdist = grid.find_nearest_gridcell(
@@ -71,6 +70,7 @@ def get_wrf_timeseries(param, lon, lat, zagl):
         wrf_hgt = ds.HGT[0,:,:]
 
     return df, wrf_hgt
+ 
 
 
 def mkdir(path, reset=False):
@@ -106,37 +106,38 @@ def write_html(param, lon, lat, zagl, directory=None):
     outpath: str
         path to HTML file
     """
+    if os.path.exists(cfg.wrfout):
+        # create directory for the plot
+        if directory is None:
+            directory = mkdtemp()
+        mkdir(directory)
+        
+        # extract timeseries from WRF output
+        print('Extracting timeseries at nearest grid cell')
+        df, hgt = get_wrf_timeseries(param, lon, lat, zagl)
+        
+        print('Plotting data')
+        # plot the timeseries
+        png = os.path.join(directory, 'timeseries.png')
+        graphics.plot_ts(df, filepath=png)
 
-    # create directory for the plot
-    if directory is None:
-        directory = mkdtemp()
-    mkdir(directory)
+        # plot a topography map
+        png = os.path.join(directory, 'topography.png')
+        graphics.plot_topo(hgt, (df.attrs['lon_grid_point'], 
+                           df.attrs['lat_grid_point']), filepath=png)
 
-    # extract timeseries from WRF output
-    print('Extracting timeseries at nearest grid cell')
-    df, hgt = get_wrf_timeseries(param, lon, lat, zagl)
-   
-    print('Plotting data')
-    # plot the timeseries
-    png = os.path.join(directory, 'timeseries.png')
-    graphics.plot_ts(df, filepath=png)
+        # create HTML from template
+        outpath = os.path.join(directory, 'index.html')
+        with open(cfg.html_template, 'r') as infile:
+            lines = infile.readlines()
+            out = []
+            for txt in lines:
+                txt = txt.replace('[PLOTTYPE]', 'Timeseries')
+                txt = txt.replace('[PLOTVAR]', param)
+                txt = txt.replace('[IMGTYPE]', 'timeseries')
+                out.append(txt)
+            with open(outpath, 'w') as outfile:
+                outfile.writelines(out)
 
-    # plot a topography map
-    png = os.path.join(directory, 'topography.png')
-    graphics.plot_topo(hgt, (df.attrs['lon_grid_point'], 
-                       df.attrs['lat_grid_point']), filepath=png)
-
-    # create HTML from template
-    outpath = os.path.join(directory, 'index.html')
-    with open(cfg.html_template, 'r') as infile:
-        lines = infile.readlines()
-        out = []
-        for txt in lines:
-            txt = txt.replace('[PLOTTYPE]', 'Timeseries')
-            txt = txt.replace('[PLOTVAR]', param)
-            txt = txt.replace('[IMGTYPE]', 'timeseries')
-            out.append(txt)
-        with open(outpath, 'w') as outfile:
-            outfile.writelines(out)
-
-    return outpath
+        return outpath
+    
