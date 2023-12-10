@@ -1,7 +1,7 @@
 """ Configuration module containing settings and constants. """
 import os
 
-wrfout = 'ffff/WRF_output_project.nc'
+wrfout = 'C:/Users/Christian/OneDrive/Desktop/Family/Christian/MasterMeteoUnitn/Corsi/3_terzo_semestre/ScientificProgramming/Project/WRF_output_project.nc'
 
 # location of data directory
 pkgdir = os.path.dirname(__file__)
