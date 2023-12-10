@@ -25,7 +25,7 @@ def plot_topo(topo, lonlat, filepath=None):
     ax.set_ylabel('Latitude ($^{\circ}$)')
 
     clevels = np.arange(cfg.topo_min, cfg.topo_max, 200)
-    hc = ax.contourf(topo.XLONG, topo.XLAT, topo.data, levels=clevels, cmap='terrain', 
+    hc = ax.contourf(topo.XLONG, topo.XLAT, topo.data, levels=clevels, cmap='terrain',
                      vmin=cfg.topo_min, vmax=cfg.topo_max, extend='both')
     ax.scatter(*lonlat, s=30, c='black', marker='s')
 
@@ -50,21 +50,38 @@ def plot_ts(df, filepath=None):
     df: pandas dataframe
         timeseries of df.variable_name
     '''
+    try:
+        fig, ax = plt.subplots(figsize=(10, 4))
+        ax.plot(df[df.attrs['variable_name']], color='black')
+        ax.set_ylabel(
+            f"{df.attrs['variable_name']} ({df.attrs['variable_units']})")
 
-    fig, ax = plt.subplots(figsize=(10, 4))
-    ax.plot(df[df.attrs['variable_name']], color='black')
-    ax.set_ylabel(f"{df.attrs['variable_name']} ({df.attrs['variable_units']})")
+        # title contains information about lon, lat, z agl, and time
+        title = ('WRF time series at location {:.2f}$^{{\circ}}$E/{:.2f}$^{{\circ}}$N, '
+                 + 'grid point elevation at time 0: {:.2f} m a.g.l'
+                 + '\nModel initialization time: {:%d %b %Y, %H%M} UTC')
+        plt.title(title.format(df.XLONG[0], df.XLAT[0],
+                               df.attrs['grid_point_elevation_time0'], df.index[0]), loc='left')
 
-    # title contains information about lon, lat, z agl, and time
-    title = ('WRF time series at location {:.2f}$^{{\circ}}$E/{:.2f}$^{{\circ}}$N, '
-             + 'grid point elevation at time 0: {:.2f} m a.g.l'
-             + '\nModel initialization time: {:%d %b %Y, %H%M} UTC')
-    plt.title(title.format(df.XLONG[0], df.XLAT[0], 
-        df.attrs['grid_point_elevation_time0'], df.index[0]), loc='left')
+        # format the datetime tick mark labels
+        ax.xaxis.set_major_formatter(dates.DateFormatter('%H%M'))
+        ax.set_xlabel('Time (UTC)')
 
-    # format the datetime tick mark labels
-    ax.xaxis.set_major_formatter(dates.DateFormatter('%H%M'))
-    ax.set_xlabel('Time (UTC)')
+    except:
+        fig, ax = plt.subplots(figsize=(10, 4))
+        ax.plot(df[df.attrs['variable_name']], color='black')
+        ax.set_ylabel(
+            f"{df.attrs['variable_name']} ({df.attrs['variable_units']})")
+
+        title = ('WRF time series at location {:.2f}$^{{\circ}}$E/{:.2f}$^{{\circ}}$N, '
+                 + '\nModel initialization time: {:%d %b %Y, %H%M} UTC')
+
+        plt.title(title.format(
+            df.XLONG[0], df.XLAT[0], df.index[0]), loc='left')
+
+        # format the datetime tick mark labels
+        ax.xaxis.set_major_formatter(dates.DateFormatter('%H%M'))
+        ax.set_xlabel('Time (UTC)')
 
     if filepath is not None:
         plt.savefig(filepath, dpi=150)
