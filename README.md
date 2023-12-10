@@ -43,9 +43,11 @@ to see what the tool can do.
 You have 2 option to run the code, depending on the variable that you select. A list of output variable is [here](https://www2.mmm.ucar.edu/wrf/users/wrf_users_guide/build/html/output_variables.html)
  
 For 3d variable (T: "perturbation potential temperature theta-t0") type:
+
 $ wrfvis_gridcell -p T -l 11 45 200
 
 For 2d variable (MU: "perturbation dry air mass in column") type:
+
 $ wrfvis_gridcell -p MU -l 11 45 
 
 ## Testing
