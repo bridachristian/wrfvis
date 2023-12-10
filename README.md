@@ -44,11 +44,11 @@ You have 2 option to run the code, depending on the variable that you select. A 
  
 For 3d variable (T: "perturbation potential temperature theta-t0") type:
 
-$ wrfvis_gridcell -p T -l 11 45 200
+    $ wrfvis_gridcell -p T -l 11 45 200
 
 For 2d variable (MU: "perturbation dry air mass in column") type:
 
-$ wrfvis_gridcell -p MU -l 11 45 
+    $ wrfvis_gridcell -p MU -l 11 45 
 
 ## Testing
 
