@@ -76,3 +76,7 @@ def wrfvis_gridcell():
     # Minimal code because we don't want to test for sys.argv
     # (we could, but this is way above the purpose of this package
     gridcell(sys.argv[1:])
+
+
+def lena():
+    print('Test')
