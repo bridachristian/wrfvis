@@ -7,6 +7,7 @@ wrfvis/cltools.py
 wrfvis/core.py
 wrfvis/graphics.py
 wrfvis/grid.py
+wrfvis/skewT.py
 wrfvis.egg-info/PKG-INFO
 wrfvis.egg-info/SOURCES.txt
 wrfvis.egg-info/dependency_links.txt

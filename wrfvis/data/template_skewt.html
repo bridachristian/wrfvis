@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Visualization of WRF model output</title>
+    <style>
+        /* Set the width and height of the image */
+        img {
+            width: auto; /* Adjust this to your desired width */
+            height: auto; /* Maintain aspect ratio */
+        }
+
+        /* Remove bullet points for the list */
+        ul {
+            list-style-type: none;
+            padding-left: 0; /* Remove default padding */
+        }
+
+    </style>
+</head>
+<body>
+
+<h1>Visualization of WRF model output</h1>
+
+<h2>Model topography</h2>
+
+<a href="topo.png"><img alt="Model topography" src="topo.png"></a>
+
+<h2>Skew T-logP plot: lat = [LAT], lon = [LON] - [TIME] </h2>
+
+<a href="skewt.png"><img alt="Skew T-logP plot" src="skewt.png"></a>
+<a href="wind.png"><img alt="Wind plot" src="wind.png"></a>
+<a href="hodo.png"><img alt="Hodograph plot" src="hodo.png"></a>
+
+<h2> Skew T-logP Parameters </h2>
+<h4> General indices </h4>
+<ul>
+	<li>Freezing level = [FREEZING_LEVEL_m] m</li>
+	<li>Precipitable water = [PRECIP_WATER] mm</li>
+	<li>Total of totals index = [TOTAL_TOTALS_INDEX] °C</li>
+	<li>Relative Humidity at surface = [RH_0] %</li>
+</ul>
+
+<h4> Mixed Layer Parcel </h4>
+<ul>
+	<li>Lifted Condensation Level = [ML_LCL] hPa</li>
+	<li>Level of Free Convection = [ML_LFC] hPa</li> 
+	<li>Lifted index = [ML_LI] delta °C</li>
+	<li>Convective Available Potential Energy = [ML_CAPE] J/kg</li>
+	<li>Convective Inibition = [ML_CIN] J/kg</li>
+</ul>
+
+<h4> Surface Based Parcel </h4>
+<ul>
+	<li>Lifted Condensation Level = [SB_LCL] hPa</li>
+	<li>Level of Free Convection = [SB_LFC] hPa</li> 
+	<li>Lifted index = [SB_LI] delta °C</li>
+	<li>Convective Available Potential Energy = [SB_CAPE] J/kg</li>
+	<li>Convective Inibition = [SB_CIN] J/kg</li>
+</ul>
+
+<h4> Wind indices </h4>
+<ul>
+	<li>Root mean square direction = [RM_DIR] °</li>
+	<li>Root mean square speed = [RM_SPEED] m/s</li> 
+	<li>Wind shear 0-1 km  = [SHEAR_1KM] m/s</li>
+	<li>Wind shear 0-6 km = [SHEAR_6KM] m/s</li>
+	<li>Storm relative helicity 0-1 km = [SRH_1km_tot] m2/s2</li>
+	<li>Storm relative helicity 0-3 km = [SRH_3km_tot] m2/s2</li>
+</ul>
+
+<h4> Additional indices </h4>
+<ul>
+	<li>Most unstable CAPE = [MUCAPE] J kg-1</li>
+	<li>Equilibrium level = [EL] hPa</li> 
+	<li>CAPE strenght  = [CAPE_strenght] J-0.5 kg-0.5</li>
+	<li>K-index = [K_INDEX] °C</li>
+</ul>
+
+</body>
+</html>
+
+
+

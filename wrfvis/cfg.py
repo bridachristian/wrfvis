@@ -6,6 +6,9 @@ wrfout = 'C:/Users/Christian/OneDrive/Desktop/Family/Christian/MasterMeteoUnitn/
 # location of data directory
 pkgdir = os.path.dirname(__file__)
 html_template = os.path.join(pkgdir, 'data', 'template.html')
+html_template_skewt = os.path.join(pkgdir, 'data', 'template_skewt.html')
+html_template_skewt_delta = os.path.join(
+    pkgdir, 'data', 'template_skewt_delta.html')
 test_ts_df = os.path.join(pkgdir, 'data', 'test_df_timeseries.pkl')
 test_hgt = os.path.join(pkgdir, 'data', 'test_hgt.nc')
 
