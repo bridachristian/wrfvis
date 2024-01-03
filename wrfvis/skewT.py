@@ -301,15 +301,18 @@ def get_skewt_data(time, lon, lat):
     PH = get_vertical('PH', lon, lat)
 
     ''' Select timestamps '''
-    T = T.loc[time, :]
-    T00 = T00.loc[time, :]
-    P = P .loc[time, :]
-    PB = PB.loc[time, :]
-    QVAPOR = QVAPOR.loc[time, :]
-    U = U.loc[time, :]
-    V = V.loc[time, :]
-    PHB = PHB.loc[time, :]
-    PH = PH.loc[time, :]
+    if time in T.index:
+        T = T.loc[time, :]
+        T00 = T00.loc[time, :]
+        P = P .loc[time, :]
+        PB = PB.loc[time, :]
+        QVAPOR = QVAPOR.loc[time, :]
+        U = U.loc[time, :]
+        V = V.loc[time, :]
+        PHB = PHB.loc[time, :]
+        PH = PH.loc[time, :]
+    else:
+        raise ValueError("The selected time is not in WRF output.")
 
     return T, T00, P, PB, QVAPOR, U, V
 
