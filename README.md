@@ -38,6 +38,11 @@ After installation, just type
     $ wrfvis_gridcell --help
 
 to see what the tool can do.
+
+For plotting Skew T-logP type
+
+    $ wrfvis_skewt --help
+
 ## Usage
 
 You have 2 option to run the code, depending on the variable that you select. A list of output variable is [here](https://www2.mmm.ucar.edu/wrf/users/wrf_users_guide/build/html/output_variables.html)
@@ -50,6 +55,14 @@ For 3d variable (T: "perturbation potential temperature theta-t0") type:
 For 2d variable (MU: "perturbation dry air mass in column") type
 
     $ wrfvis_gridcell -p MU -l 11 45
+
+For single timestamp sounding type
+
+    $ wrfvis_skewt -l 11 45 -t 2018-08-18T12:00
+
+For multiple timestamp sounding comparison type
+
+    $ wrfvis_skewt -l 11 45 -t 2018-08-18T12:00 12
 
 
 ## Testing
