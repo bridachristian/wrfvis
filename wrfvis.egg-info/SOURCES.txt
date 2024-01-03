@@ -7,6 +7,7 @@ wrfvis/cltools.py
 wrfvis/core.py
 wrfvis/graphics.py
 wrfvis/grid.py
+wrfvis/skewT.py
 wrfvis.egg-info/PKG-INFO
 wrfvis.egg-info/SOURCES.txt
 wrfvis.egg-info/dependency_links.txt
@@ -14,6 +15,8 @@ wrfvis.egg-info/entry_points.txt
 wrfvis.egg-info/requires.txt
 wrfvis.egg-info/top_level.txt
 wrfvis/data/template.html
+wrfvis/data/template_skewt.html
+wrfvis/data/template_skewt_delta.html
 wrfvis/tests/__init__.py
 wrfvis/tests/test_cltools.py
 wrfvis/tests/test_core.py

@@ -1,2 +1,3 @@
 [console_scripts]
 wrfvis_gridcell = wrfvis.cltools:wrfvis_gridcell
+wrfvis_skewt = wrfvis.cltools:wrfvis_skewt
