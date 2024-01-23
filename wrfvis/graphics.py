@@ -6,6 +6,7 @@ from matplotlib import dates
 from metpy.plots import SkewT
 from math import ceil
 from datetime import datetime, timedelta
+import pandas as pd
 
 
 from wrfvis import cfg, skewT
@@ -435,7 +436,7 @@ def plot_skewt_deltatime(time, lat, lon, deltatime=24, filepath=None):
     '''
 
     time0 = datetime.strptime(time, '%Y-%m-%dT%H:%M')
-    time_new = (time0 + timedelta(hours=deltatime-1)
+    time_new = (time0 + timedelta(hours=deltatime)
                 ).strftime('%Y-%m-%dT%H:%M')
     TIME = (time, time_new)
 

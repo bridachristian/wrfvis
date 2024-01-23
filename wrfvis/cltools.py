@@ -93,11 +93,11 @@ def skewt(args):
     ----------
     args: list
         output of sys.args[1:]
-        
+
     Examples
     --------
     wrfvis_skewt -l 11 45 -t 2018-08-18T12:00
-    
+
     """
 
     if '--location' in args:
@@ -105,28 +105,29 @@ def skewt(args):
 
     if len(args) == 0:
         print(HELP_SKEWT)
-    elif args[0] in ['-h_skewt', '--help_skewt']:
+    elif args[0] in ['-h', '--help']:
         print(HELP_SKEWT)
     elif args[0] in ['-v', '--version']:
         print('wrfvis_gridcell: ' + wrfvis.__version__)
         print('Licence: public domain')
-        print('wrfvis_gridcell is provided "as is", without warranty of any kind')
+        print('wrfvis_skewt is provided "as is", without warranty of any kind')
     elif ('-t' in args) and ('-l' in args):
         lon = float(args[args.index('-l') + 1])
         lat = float(args[args.index('-l') + 2])
         time = args[args.index('-t') + 1]
-        try: 
+        try:
             deltatime = int(args[args.index('-t') + 2])
-        except: 
+        except:
             deltatime = None
 
         if os.path.exists(wrfvis.cfg.wrfout):
-            
+
             if deltatime is None:
-                html_path = wrfvis.core.write_html_skewt(time, lon, lat, directory=None)
+                html_path = wrfvis.core.write_html_skewt(
+                    time, lon, lat, directory=None)
             else:
-                html_path = wrfvis.core.write_html_delta_skewt(time, lon, lat, deltatime, directory=None)
-                
+                html_path = wrfvis.core.write_html_delta_skewt(
+                    time, lon, lat, deltatime, directory=None)
 
             if '--no-browser' in args:
                 print('File successfully generated at: ' + html_path)

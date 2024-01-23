@@ -228,73 +228,23 @@ def write_html_skewt(time, lon, lat, directory=None):
 
         print('Parameters')
 
-        FREEZING_LEVEL_m, PRECIP_WATER, TOTAL_TOTALS_INDEX, RH_0 = skewT.calc_skewt_param_general(
-            time, lon, lat)
+        # Calculate parameters
+        parameters = skewT.calculate_skewt_parameters(time, lon, lat)
 
-        ML_LCL, ML_LFC, ML_LI, ML_CAPE, ML_CIN = skewT.calc_skewt_param_mixed_layer(
-            time, lon, lat)
-
-        SB_LCL, SB_LFC, SB_LI, SB_CAPE, SB_CIN = skewT.calc_skewt_param_surface_based(
-            time, lon, lat)
-
-        RM_DIR, RM_SPEED, SHEAR_1KM, SHEAR_6KM, SRH_1km_tot, SRH_3km_tot = skewT.calc_skewt_param_wind(
-            time, lon, lat)
-
-        MUCAPE, EL, CAPE_strenght, K_INDEX = skewT.calc_skewt_param_extra(
-            time, lon, lat)
         # create HTML from template
         outpath = os.path.join(directory, 'index.html')
         with open(cfg.html_template_skewt, 'r') as infile:
             lines = infile.readlines()
             out = []
             for txt in lines:
-                ''' Coordinates'''
-                txt = txt.replace('[LAT]',
-                                  f'{lat}')
-                txt = txt.replace('[LON]',
-                                  f'{lon}')
-                txt = txt.replace('[TIME]',
-                                  f'{time}')
+                # Replace placeholders in the template with actual values
+                txt = txt.replace('[LAT]', f'{lat}')
+                txt = txt.replace('[LON]', f'{lon}')
+                txt = txt.replace('[TIME]', f'{time}')
 
-                ''' General parameters '''
-                txt = txt.replace('[FREEZING_LEVEL_m]',
-                                  f'{FREEZING_LEVEL_m:.0f}')
-                txt = txt.replace('[PRECIP_WATER]',
-                                  f'{PRECIP_WATER.magnitude:.2f}')
-                txt = txt.replace('[TOTAL_TOTALS_INDEX]',
-                                  f'{TOTAL_TOTALS_INDEX.magnitude:.2f}')
-                txt = txt.replace('[RH_0]', f'{RH_0.magnitude:.2f}')
-
-                ''' Mixed Layer parcel '''
-                txt = txt.replace('[ML_LCL]', f'{ML_LCL.magnitude:.2f}')
-                txt = txt.replace('[ML_LFC]', f'{ML_LFC.magnitude:.2f}')
-                txt = txt.replace('[ML_LI]', f'{ML_LI[0].magnitude:.2f}')
-                txt = txt.replace('[ML_CAPE]', f'{ML_CAPE.magnitude:.2f}')
-                txt = txt.replace('[ML_CIN]', f'{ML_CIN.magnitude:.2f}')
-
-                ''' Surface based parcel '''
-                txt = txt.replace('[SB_LCL]', f'{SB_LCL.magnitude:.2f}')
-                txt = txt.replace('[SB_LFC]', f'{SB_LFC.magnitude:.2f}')
-                txt = txt.replace('[SB_LI]', f'{SB_LI[0].magnitude:.2f}')
-                txt = txt.replace('[SB_CAPE]', f'{SB_CAPE.magnitude:.2f}')
-                txt = txt.replace('[SB_CIN]', f'{SB_CIN.magnitude:.2f}')
-
-                ''' Wind indices '''
-                txt = txt.replace('[RM_DIR]', f'{RM_DIR:.2f}')
-                txt = txt.replace('[RM_SPEED]', f'{RM_SPEED:.2f}')
-                txt = txt.replace('[SHEAR_1KM]', f'{SHEAR_1KM:.2f}')
-                txt = txt.replace('[SHEAR_6KM]', f'{SHEAR_6KM:.2f}')
-                txt = txt.replace(
-                    '[SRH_1km_tot]', f'{SRH_1km_tot.magnitude:.2f}')
-                txt = txt.replace(
-                    '[SRH_3km_tot]', f'{SRH_3km_tot.magnitude:.2f}')
-
-                ''' Other indices '''
-                txt = txt.replace('[MUCAPE]', f'{MUCAPE.magnitude:.2f}')
-                txt = txt.replace('[EL]', f'{EL.magnitude:.2f}')
-                txt = txt.replace('[CAPE_strenght]',
-                                  f'{CAPE_strenght.magnitude:.2f}')
-                txt = txt.replace('[K_INDEX]', f'{K_INDEX.magnitude:.2f}')
+                # Replace parameters in the template
+                for key, value in parameters.items():
+                    txt = txt.replace(f'[{key}]', f'{value}')
 
                 out.append(txt)
             with open(outpath, 'w') as outfile:

@@ -301,7 +301,7 @@ def get_skewt_data(time, lon, lat):
     PH = get_vertical('PH', lon, lat)
 
     ''' Select timestamps '''
-    if time in T.index:
+    if isinstance(time, str):
         T = T.loc[time, :]
         T00 = T00.loc[time, :]
         P = P .loc[time, :]
@@ -312,7 +312,20 @@ def get_skewt_data(time, lon, lat):
         PHB = PHB.loc[time, :]
         PH = PH.loc[time, :]
     else:
-        raise ValueError("The selected time is not in WRF output.")
+        time_pd = pd.to_datetime(time)
+
+        if time_pd.isin(T.index).all():
+            T = T.loc[time_pd, :]
+            T00 = T00.loc[time_pd, :]
+            P = P .loc[time_pd, :]
+            PB = PB.loc[time_pd, :]
+            QVAPOR = QVAPOR.loc[time_pd, :]
+            U = U.loc[time_pd, :]
+            V = V.loc[time_pd, :]
+            PHB = PHB.loc[time_pd, :]
+            PH = PH.loc[time_pd, :]
+        else:
+            raise ValueError("The selected time is not in WRF output.")
 
     return T, T00, P, PB, QVAPOR, U, V
 
@@ -753,21 +766,66 @@ def calc_skewt_param_extra(time, lon, lat):
     return MUCAPE, EL, CAPE_strenght, K_INDEX
 
 
-if __name__ == '__main__':
-    lat = 45.1
-    lon = 11.5
-    time = '2018-08-18T12:00'
-    deltatime = 24
-    # # # Load WRF data
-    # # wrf_data = xr.open_dataset(cfg.wrfout)
-    # plot_skewt(time, lon, lat)
-    # plot_hodograph(time, lon, lat)
-    # plot_wind_profile(time, lon, lat)
-    # plot_skewt_full(time, lon, lat)
-    # plot_skewt_deltatime(time, lat, lon, deltatime)
-    # plot_skewt_averaged(time, lat, lon, deltatime)
+def calculate_skewt_parameters(time, lon, lat):
+    '''
+    Calculate some useful Skew T-logP parameters and save into a dictionary
 
-    # terrain_hgt = get_vertical('HGT', lon, lat)
+    Author
+    ------
+    Christian Brida
 
-    write_html_skewt(time, lon, lat, directory=None)
-    # write_html_delta_skewt(time, lon, lat, deltatime, directory=None)
+    Parameters
+    ----------
+    time : str
+        timestamp, use the format YYYY-MM-DDTHH:MM.
+    lon : float
+        the longitude
+    lat : float
+        the latitude
+
+    Returns
+    -------
+    parameters_dict : dict
+        dictionary of the paramters to put in the HTML file.
+
+    '''
+    # Calculate parameters
+    FREEZING_LEVEL_m, PRECIP_WATER, TOTAL_TOTALS_INDEX, RH_0 = calc_skewt_param_general(
+        time, lon, lat)
+    ML_LCL, ML_LFC, ML_LI, ML_CAPE, ML_CIN = calc_skewt_param_mixed_layer(
+        time, lon, lat)
+    SB_LCL, SB_LFC, SB_LI, SB_CAPE, SB_CIN = calc_skewt_param_surface_based(
+        time, lon, lat)
+    RM_DIR, RM_SPEED, SHEAR_1KM, SHEAR_6KM, SRH_1km_tot, SRH_3km_tot = calc_skewt_param_wind(
+        time, lon, lat)
+    MUCAPE, EL, CAPE_strenght, K_INDEX = calc_skewt_param_extra(
+        time, lon, lat)
+
+    parameters_dict = {
+        'FREEZING_LEVEL_m': f'{FREEZING_LEVEL_m:.0f}',
+        'PRECIP_WATER': f'{PRECIP_WATER.magnitude:.2f}',
+        'TOTAL_TOTALS_INDEX': f'{TOTAL_TOTALS_INDEX.magnitude:.2f}',
+        'RH_0': f'{RH_0.magnitude:.2f}',
+        'ML_LCL': f'{ML_LCL.magnitude:.2f}',
+        'ML_LFC': f'{ML_LFC.magnitude:.2f}',
+        'ML_LI': f'{ML_LI[0].magnitude:.2f}',
+        'ML_CAPE': f'{ML_CAPE.magnitude:.2f}',
+        'ML_CIN': f'{ML_CAPE.magnitude:.2f}',
+        'SB_LCL': f'{SB_LCL.magnitude:.2f}',
+        'SB_LFC': f'{SB_LFC.magnitude:.2f}',
+        'SB_LI': f'{SB_LI[0].magnitude:.2f}',
+        'SB_CAPE': f'{SB_CAPE.magnitude:.2f}',
+        'SB_CIN': f'{SB_CIN.magnitude:.2f}',
+        'RM_DIR':  f'{RM_DIR:.2f}',
+        'RM_SPEED': f'{RM_SPEED:.2f}',
+        'SHEAR_1KM': f'{SHEAR_1KM:.2f}',
+        'SHEAR_6KM': f'{SHEAR_6KM:.2f}',
+        'SRH_1km_tot':  f'{SRH_1km_tot.magnitude:.2f}',
+        'SRH_3km_tot': f'{SRH_3km_tot.magnitude:.2f}',
+        'MUCAPE': f'{MUCAPE.magnitude:.2f}',
+        'EL': f'{EL.magnitude:.2f}',
+        'CAPE_strenght': f'{EL.magnitude:.2f}',
+        'K_INDEX': f'{K_INDEX.magnitude:.2f}',
+    }
+    # Return a dictionary containing the calculated parameters
+    return parameters_dict
