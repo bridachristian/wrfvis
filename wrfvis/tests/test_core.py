@@ -1,9 +1,8 @@
 import os
 import numpy as np
-import tempfile
-import shutil
 
 from wrfvis import core, cfg
+import pytest
 
 
 def test_get_ts():
@@ -21,19 +20,55 @@ def test_get_ts():
     assert hgt.dims == ('south_north', 'west_east')
 
 
+def test_get_time_index():
+    '''Tests the get_time_index
+    Author: Johanna Schramm'''
+    assert core.get_time_index('2018-08-18T12:00') == 0
+    assert core.get_time_index('2018-08-18T13:00') == 1
+    assert core.get_time_index('2018-08-19T23:00') == 35
+
+    with pytest.raises(ValueError):
+        core.get_time_index('2018-08-19T24:00')
+
+    with pytest.raises(ValueError):
+        core.get_time_index('2017-08-19T24:00')
+
+
+def test_get_wrf_for_map():
+    '''Author: Johanna Schramm'''
+
+    df, is_3D = core.get_wrf_for_map('T2', 5)
+
+    assert df.attrs['variable_name'] == 'T2'
+    assert df.attrs['variable_units'] == 'K'
+    assert df.attrs['variable_descr'] == 'TEMP at 2 M'
+    assert is_3D == False
+
+    df, is_3D = core.get_wrf_for_map('T', 5, 5)
+
+    assert df.attrs['variable_name'] == 'T'
+    assert df.attrs['variable_units'] == 'K'
+    assert is_3D == True
+
+
+def test_write_html_map(tmpdir, capsys):
+    '''Author:Johanna Schramm'''
+    outpath = core.write_html_map('T2', 2, None)
+    assert os.path.exists(outpath)
+    captured = capsys.readouterr()
+    assert 'Extracting values at specified time' in captured.out
+
+
 def test_mkdir(tmpdir):
 
     dir = str(tmpdir.join('html_dir'))
     core.mkdir(dir)
     assert os.path.isdir(dir)
-
-
-def test_write_html_skewt():
+    
+ def test_write_html_skewt():
     ''' Test if html file is created and if there is specific content inside
 
-    Author
-    --------
-    Christian Brida
+    Author:Christian Brida
     '''
     # Create a temporary directory for testing
     test_directory = tempfile.mkdtemp()
@@ -68,9 +103,7 @@ def test_write_html_skewt():
 def test_write_html_delta_skewt():
     ''' Test if html file is created and if there is specific content inside
 
-    Author
-    --------
-    Christian Brida
+    Author:Christian Brida
     '''
     # Create a temporary directory for testing
     test_directory = tempfile.mkdtemp()
@@ -102,3 +135,4 @@ def test_write_html_delta_skewt():
     finally:
         # Cleanup: Remove the temporary directory
         shutil.rmtree(test_directory)
+

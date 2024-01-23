@@ -5,9 +5,10 @@ import matplotlib.pyplot as plt
 from matplotlib import dates
 from metpy.plots import SkewT
 from math import ceil
+import cartopy.crs as ccrs
 from datetime import datetime, timedelta
-import pandas as pd
 
+from wrfvis import cfg
 
 from wrfvis import cfg, skewT
 
@@ -23,7 +24,6 @@ def plot_topo(topo, lonlat, filepath=None):
     lonlat: tuple
         longitude, latitude of WRF grid cell
     '''
-
     fig, ax = plt.subplots(figsize=(8, 6))
     ax.set_position([0.1, 0.1, 0.75, 0.85])
     ax.set_xlabel('Longitude ($^{\circ}$)')
@@ -65,6 +65,7 @@ def plot_ts(df, filepath=None):
         title = ('WRF time series at location {:.2f}$^{{\circ}}$E/{:.2f}$^{{\circ}}$N, '
                  + 'grid point elevation at time 0: {:.2f} m a.g.l'
                  + '\nModel initialization time: {:%d %b %Y, %H%M} UTC')
+
         plt.title(title.format(df.XLONG[0], df.XLAT[0],
                                df.attrs['grid_point_elevation_time0'], df.index[0]), loc='left')
 
@@ -87,6 +88,145 @@ def plot_ts(df, filepath=None):
         # format the datetime tick mark labels
         ax.xaxis.set_major_formatter(dates.DateFormatter('%H%M'))
         ax.set_xlabel('Time (UTC)')
+
+    if filepath is not None:
+        plt.savefig(filepath, dpi=150)
+        plt.close()
+
+    return fig
+
+
+def plot_map(var, is_3D, filepath=None):
+    '''plot a specified variable on a map
+        Author: Johanna Schramm
+
+        Parameters
+        ----------
+        var: xarray DataArray of variable in 2D 
+        (if variable originally had 3D then one selected height is used)
+
+        is_3D: Boolean flag if the variable used to be 3D 
+        to ensure proper informatin display in title
+
+        return:
+        ----------
+        fig: Figure of Plot
+
+        '''
+    # figure setup
+    fig, ax = plt.subplots(figsize=(8, 6), subplot_kw={
+                           'projection': ccrs.PlateCarree()})
+    ax.set_position([0.1, 0.1, 0.75, 0.85])
+
+    # Extract data and variable attributes
+    var_name = str(var.attrs['variable_name'])
+    var_unit = str(var.attrs['variable_units'])
+    var_descr = str(var.attrs['variable_descr'])
+    if is_3D:
+        var_time = var.Time[1, 0][0]
+    else:
+        var_time = var.Time[1, 0]
+    data = var[var_name]
+
+    # get min and max from data for colorextend
+    min_data = int(min(data))
+    max_data = int(max(data))+1
+
+    # plot variable and coastlines
+    clevels = np.linspace(min_data, max_data, 10, endpoint=True)
+    if is_3D:
+        ax_map = ax.tricontourf(var.XLONG, var.XLAT, data)
+    else:
+        ax_map = ax.tricontourf(var.XLONG, var.XLAT, data,
+                                levels=clevels, vmin=min_data, vmax=max_data)
+    ax.coastlines()
+
+    # title and labels
+    title = 'Map of {} ({}) \n in {} on {:%d %b %Y, %H%M} UTC '
+    plt.title(title.format(var_name, var_descr,
+              var_unit, var_time), loc='center')
+    ax.set_xlabel('Longitude ($^{\circ}$)')
+    ax.set_ylabel('Latitude ($^{\circ}$)')
+
+    # colorbar
+    cbax = fig.add_axes([0.88, 0.1, 0.02, 0.85])
+    plt.axis('off')
+    cb = plt.colorbar(ax_map, ax=cbax, fraction=1)
+    cb.ax.set_ylabel(f'${var_name}$ ({var_unit})')
+
+    # save figure
+    if filepath is not None:
+        plt.savefig(filepath, dpi=150)
+        plt.close()
+
+    return fig
+
+
+def plot_cross(var, filepath=None):
+    '''
+    plot a crosssection over longitude or latitude
+
+    Author
+    ------
+    Lena Zelger
+
+    Parameters
+    ----------
+    var : 
+        xarray DataArray from get_wrf_for_cross
+    filepath : str, optional
+        path where the figure is saved. The default is None.
+
+    Returns
+    -------
+    fig :
+        Crosssection height, longitude or latitude.
+
+    '''
+    # User chooses latitude value
+    if var.dims[1] == 'west_east':
+        fig, ax = plt.subplots(figsize=(8, 6))
+        ax.set_position([0.1, 0.1, 0.75, 0.85])
+
+        coord_name = 'longitude'
+        ax.set_xlabel(coord_name)
+        ax.set_ylabel('Gridcell height value')
+
+        # define figure
+
+        # creates crosssection
+        hc = ax.contourf(var.XLONG, var.bottom_top, var)
+
+        # Get the name of the parameter for the labeling of the y-axis
+        lat_value = int(var.attrs['lat'])
+        # Set the title using the specified latitude value
+        ax.set_title(f"Cross-Section at Latitude: {lat_value} $^{{\circ}}$")
+
+        param_name = var.name
+        cbax = fig.add_axes([0.88, 0.1, 0.02, 0.85])
+        plt.axis('off')
+        cb = plt.colorbar(hc, ax=cbax, fraction=1, format='%.0f')
+        cb.ax.set_ylabel(
+            f"{var.attrs['description']} - [{var.attrs['units']}]")
+        print(var)
+    # User chooses longitude value
+    if var.dims[1] == 'south_north':
+        fig, ax = plt.subplots(figsize=(8, 6))
+        ax.set_position([0.1, 0.1, 0.75, 0.85])
+        coord_name = var.coords[var.dims[1]].name
+        ax.set_xlabel('latitude ')
+        ax.set_ylabel('Gridcell height value')
+        cbax = fig.add_axes([0.88, 0.1, 0.02, 0.85])
+        hc = ax.contourf(var.XLAT, var.bottom_top, var)
+
+        lon_value = int(var.attrs['lon'])
+        ax.set_title(f"Cross-Section at Longitude: {lon_value} $^{{\circ}}$")
+
+        param_name = var.name
+        cb = plt.colorbar(hc, ax=cbax, fraction=1, format='%.0f')
+        cb.ax.set_ylabel(
+            f"{var.attrs['description']} - [{var.attrs['units']}]")
+        print(var)
 
     if filepath is not None:
         plt.savefig(filepath, dpi=150)
