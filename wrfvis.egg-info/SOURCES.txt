@@ -22,3 +22,4 @@ wrfvis/tests/test_cltools.py
 wrfvis/tests/test_core.py
 wrfvis/tests/test_graphics.py
 wrfvis/tests/test_grid.py
+wrfvis/tests/test_skewt.py

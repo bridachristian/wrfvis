@@ -39,3 +39,158 @@ def test_plot_ts(tmpdir):
     assert os.path.exists(fpath)
 
     plt.close()
+
+
+def test_plot_skewt(tmpdir):
+    '''
+    Check that figure is created
+
+    Author
+    ----------
+    Christian Brida
+
+    Parameters
+    ----------
+    tmpdir : TYPE
+        DESCRIPTION.
+
+    Returns
+    -------
+    None.
+
+    '''
+
+    time = '2018-08-18T12:00'
+    lon = 11
+    lat = 45
+
+    # Check that figure is created
+    fpath = str(tmpdir.join('skewt.png'))
+    graphics.plot_skewt(time, lon, lat, filepath=fpath)
+    assert os.path.exists(fpath)
+
+    plt.close()
+
+
+def test_plot_hodograph(tmpdir):
+    '''
+    Check that figure is created
+
+    Author
+    ----------
+    Christian Brida
+
+    Parameters
+    ----------
+    tmpdir : TYPE
+        DESCRIPTION.
+
+    Returns
+    -------
+    None.
+
+    '''
+
+    time = '2018-08-18T12:00'
+    lon = 11
+    lat = 45
+
+    # Check that figure is created
+    fpath = str(tmpdir.join('hodo.png'))
+    graphics.plot_hodograph(time, lon, lat, filepath=fpath)
+    assert os.path.exists(fpath)
+
+    plt.close()
+
+
+def test_plot_wind_profile(tmpdir):
+    '''
+    Check that figure is created
+
+    Author
+    ----------
+    Christian Brida
+
+    Parameters
+    ----------
+    tmpdir : TYPE
+        DESCRIPTION.
+
+    Returns
+    -------
+    None.
+
+    '''
+
+    time = '2018-08-18T12:00'
+    lon = 11
+    lat = 45
+
+    # Check that figure is created
+    fpath = str(tmpdir.join('wind.png'))
+    graphics.plot_wind_profile(time, lon, lat, filepath=fpath)
+    assert os.path.exists(fpath)
+
+    plt.close()
+
+
+def test_plot_skewt_deltatime(tmpdir):
+    '''
+    Check that figure is created
+
+    Author
+    ----------
+    Christian Brida
+
+    Parameters
+    ----------
+    tmpdir : TYPE
+        DESCRIPTION.
+
+    Returns
+    -------
+    None.
+
+    '''
+
+    time = '2018-08-18T12:00'
+    lon = 11
+    lat = 45
+    deltatime = 12
+    # Check that figure is created
+    fpath = str(tmpdir.join('skewt_delta.png'))
+    graphics.plot_skewt_deltatime(time, lon, lat, deltatime, filepath=fpath)
+    assert os.path.exists(fpath)
+
+    plt.close()
+
+
+def test_plot_skewt_averaged(tmpdir):
+    '''
+    Check that figure is created
+
+    Author
+    ----------
+    Christian Brida
+
+    Parameters
+    ----------
+    tmpdir : TYPE
+        DESCRIPTION.
+
+    Returns
+    -------
+    None.
+
+    '''
+
+    time = '2018-08-18T12:00'
+    lon = 11
+    lat = 45
+    deltatime = 12
+    # Check that figure is created
+    fpath = str(tmpdir.join('skewt_avg.png'))
+    graphics.plot_skewt_averaged(time, lon, lat, deltatime, filepath=fpath)
+    assert os.path.exists(fpath)
+
+    plt.close()

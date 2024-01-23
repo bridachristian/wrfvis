@@ -87,7 +87,11 @@ def gridcell(args):
 
 
 def skewt(args):
-    """The actual wrfvis_gridcell command line tool.
+    '''The actual wrfvis_gridcell command line tool.
+
+    Author
+    ----------
+    Christian Brida
 
     Parameters
     ----------
@@ -98,7 +102,7 @@ def skewt(args):
     --------
     wrfvis_skewt -l 11 45 -t 2018-08-18T12:00
 
-    """
+    '''
 
     if '--location' in args:
         args[args.index('--location')] = '-l'
@@ -151,7 +155,11 @@ def wrfvis_gridcell():
 
 
 def wrfvis_skewt():
-    """Entry point for the wrfvis_skewt application script"""
+    '''Entry point for the wrfvis_skewt application script
+    Author
+    ----------
+    Christian Brida
+    '''
 
     # Minimal code because we don't want to test for sys.argv
     # (we could, but this is way above the purpose of this package
