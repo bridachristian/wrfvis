@@ -29,6 +29,12 @@ def test_mkdir(tmpdir):
 
 
 def test_write_html_skewt():
+    ''' Test if html file is created and if there is specific content inside
+
+    Author
+    --------
+    Christian Brida
+    '''
     # Create a temporary directory for testing
     test_directory = tempfile.mkdtemp()
 
@@ -47,7 +53,7 @@ def test_write_html_skewt():
         assert os.path.isfile(result_path)
         assert result_path.endswith('.html')
 
-        # Optionally, check the content of the HTML file (replace with your own assertions)
+        # Check the content of the HTML file (replace with your own assertions)
         with open(result_path, 'r') as html_file:
             html_content = html_file.read()
             assert 'lat = 45' in html_content
@@ -59,7 +65,13 @@ def test_write_html_skewt():
         shutil.rmtree(test_directory)
 
 
-def test_write_html_skewt():
+def test_write_html_delta_skewt():
+    ''' Test if html file is created and if there is specific content inside
+
+    Author
+    --------
+    Christian Brida
+    '''
     # Create a temporary directory for testing
     test_directory = tempfile.mkdtemp()
 

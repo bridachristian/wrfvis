@@ -12,6 +12,14 @@ from metpy.units import units
 
 
 def test_calc_temperature():
+    '''
+    Test if temperature is properly calculated from theta and pressure.
+    Check 3 different examples.
+
+    Author
+    --------
+    Christian Brida
+    '''
     # Create some sample data
     theta_values = pd.Series([300, 310, 320], name='theta')
     pressure_values = pd.Series([1000, 900, 800], name='pressure')
@@ -29,6 +37,14 @@ def test_calc_temperature():
 
 
 def test_calc_vapour_pressure():
+    '''
+    Test if vapour pressure is properly calculated from pressure 
+    and mixing ratio. Check 3 different examples.
+
+    Author
+    --------
+    Christian Brida
+    '''
     # Create some sample data
     pressure_values = pd.Series([1000, 900, 800], name='pressure')
     mixing_ratio_values = pd.Series([0.01, 0.02, 0.03], name='mixing_ratio')
@@ -48,6 +64,14 @@ def test_calc_vapour_pressure():
 
 
 def test_calc_satur_vapour_pressure():
+    '''
+    Test if saturation vapour pressure is properly calculated from temperature 
+    Check 3 different examples.
+
+    Author
+    --------
+    Christian Brida
+    '''
     # Create some sample data
     temperature_values = pd.Series([300, 310, 320], name='temperature')
 
@@ -66,6 +90,14 @@ def test_calc_satur_vapour_pressure():
 
 
 def test_calc_dewpoint():
+    '''
+    Test if dewpoint is properly calculated from vapour pressure 
+    and mixing ratio. Check 3 different examples.
+
+    Author
+    --------
+    Christian Brida
+    '''
     # Create some sample data
     vapour_pressure_values = pd.Series([10, 20, 30], name='vapour_pressure')
 
@@ -82,6 +114,14 @@ def test_calc_dewpoint():
 
 
 def test_calc_height_from_pressure():
+    '''
+    Test if elevation is properly calculated from pressure 
+    Check 3 different examples.
+
+    Author
+    --------
+    Christian Brida
+    '''
     # Create some sample data
     pressure_values = pd.Series([1000, 900, 800], name='pressure')
     temperature_values = pd.Series([300, 310, 320], name='temperature')
@@ -99,6 +139,14 @@ def test_calc_height_from_pressure():
 
 
 def test_get_hgt():
+    '''
+    Test if the get_hgt function get the topography of WRF, if the result is
+    an xr.DataArray and the map has a specific shape.
+
+    Author
+    --------
+    Christian Brida
+    '''
     # Assuming you have a sample WRF dataset for testing
     sample_wrf_dataset = xr.Dataset({
         'HGT': (['time', 'lat', 'lon'], np.random.rand(1, 10, 20))
@@ -118,7 +166,14 @@ def test_get_hgt():
 
 
 def test_get_skewt_data():
+    '''
+    Test if the get_skewt_data function return 7 variables as expected and 
+    the datetime extracted is the selected timestamp.
 
+    Author
+    --------
+    Christian Brida
+    '''
     # Call the function
     time = '2018-08-18T12:00'
     lon = 11.0
@@ -132,6 +187,13 @@ def test_get_skewt_data():
 
 
 def test_calc_skewt():
+    '''
+    Test the conversion from WRF output in variables used to plot Skew T-logP
+
+    Author
+    --------
+    Christian Brida
+    '''
     # Create sample data
     sample_T = pd.DataFrame([1])
     sample_T00 = pd.DataFrame([290])
@@ -160,6 +222,13 @@ def test_calc_skewt():
 
 
 def test_create_hourly_time_range():
+    '''
+    Test if the function used to create a time range produce the expected output
+
+    Author
+    --------
+    Christian Brida
+    '''
     # Define start and end times
     start_time = '2018-08-18T12:00'
     end_time = '2018-08-18T18:00'
@@ -188,6 +257,13 @@ def test_create_hourly_time_range():
 
 
 def test_convert_metpy_format():
+    '''
+    Test the conversion from numeric values to metpy format
+
+    Author
+    --------
+    Christian Brida
+    '''
     # Create sample data
     pressure_values = pd.Series([1000, 900, 800], name='pressure')
     temperature_values = pd.Series([300, 310, 320], name='temperature')
@@ -205,6 +281,17 @@ def test_convert_metpy_format():
 
 
 def test_calc_skewt_param_general():
+    '''
+    Test the retrive of Skew T-logP parameter, check the format of the output
+    and check th the paraemters are in a proper range.
+    Note: I have some problem to check the format of parameters in metpy format.
+    assert isinstance(precipitable_water, pint.Quantity) does not work
+
+
+    Author
+    --------
+    Christian Brida
+    '''
     # Create some sample data
     time = '2018-08-18T12:00'
     lon = 10.0
@@ -220,8 +307,7 @@ def test_calc_skewt_param_general():
     assert isinstance(total_totals_index.magnitude, float)
     assert isinstance(relative_humidity.magnitude, float)
 
-    # You can add more specific checks for the values based on your expectations
-    # For example, check that freezing level is a positive value
+    # Check that freezing level is a positive value
     assert freezing_level >= 0
 
     # Check that precipitable water is not negative
@@ -235,6 +321,17 @@ def test_calc_skewt_param_general():
 
 
 def test_calc_skewt_param_mixed_layer():
+    '''
+    Test the retrive of Skew T-logP parameter, check the format of the output
+    and check th the paraemters are in a proper range.
+    Note: I have some problem to check the format of parameters in metpy format.
+    assert isinstance(precipitable_water, pint.Quantity) does not work
+
+
+    Author
+    --------
+    Christian Brida
+    '''
     # Create some sample data
     time = '2018-08-18T12:00'
     lon = 10.0
@@ -251,8 +348,7 @@ def test_calc_skewt_param_mixed_layer():
     assert isinstance(CAPE.magnitude, float)
     assert isinstance(CIN.magnitude, (float, int))
 
-    # You can add more specific checks for the values based on your expectations
-    # For example, check that LCL pressure is within a reasonable range
+    # Check that LCL pressure is within a reasonable range
     assert 500 <= LCL.magnitude <= 2000
 
     # Check that LFC pressure is within a reasonable range
@@ -269,6 +365,17 @@ def test_calc_skewt_param_mixed_layer():
 
 
 def test_calc_skewt_param_surface_based():
+    '''
+    Test the retrive of Skew T-logP parameter, check the format of the output
+    and check th the paraemters are in a proper range.
+    Note: I have some problem to check the format of parameters in metpy format.
+    assert isinstance(precipitable_water, pint.Quantity) does not work
+
+
+    Author
+    --------
+    Christian Brida
+    '''
     # Create some sample data
     time = '2018-08-18T12:00'
     lon = 10.0
@@ -285,8 +392,7 @@ def test_calc_skewt_param_surface_based():
     assert isinstance(CAPE.magnitude, float)
     assert isinstance(CIN.magnitude, (float, int))
 
-    # You can add more specific checks for the values based on your expectations
-    # For example, check that LCL pressure is within a reasonable range
+    # Check that LCL pressure is within a reasonable range
     assert 500 <= LCL.magnitude <= 2000
 
     # Check that LFC pressure is within a reasonable range
@@ -303,6 +409,17 @@ def test_calc_skewt_param_surface_based():
 
 
 def test_calc_skewt_param_wind():
+    '''
+    Test the retrive of Skew T-logP parameter, check the format of the output
+    and check th the paraemters are in a proper range.
+    Note: I have some problem to check the format of parameters in metpy format.
+    assert isinstance(precipitable_water, pint.Quantity) does not work
+
+
+    Author
+    --------
+    Christian Brida
+    '''
     # Create some sample data
     time = '2018-08-18T12:00'
     lon = 10.0
@@ -320,8 +437,7 @@ def test_calc_skewt_param_wind():
     assert isinstance(SRH_1km_tot.magnitude, (float, int))
     assert isinstance(SRH_3km_tot.magnitude, (float, int))
 
-    # You can add more specific checks for the values based on your expectations
-    # For example, check that RM_DIR is within a reasonable range
+    # Check that RM_DIR is within a reasonable range
     assert 0 <= RM_DIR <= 360
 
     # Check that RM_SPEED is positive
@@ -335,6 +451,17 @@ def test_calc_skewt_param_wind():
 
 
 def test_calc_skewt_param_extra():
+    '''
+    Test the retrive of Skew T-logP parameter, check the format of the output
+    and check th the paraemters are in a proper range.
+    Note: I have some problem to check the format of parameters in metpy format.
+    assert isinstance(precipitable_water, pint.Quantity) does not work
+
+
+    Author
+    --------
+    Christian Brida
+    '''
     # Create some sample data
     time = '2018-08-18T12:00'
     lon = 10.0
@@ -354,8 +481,7 @@ def test_calc_skewt_param_extra():
     assert MUCAPE.units == units.J / units.kg
     assert EL.units == units.hPa
 
-    # You can add more specific checks for the values based on your expectations
-    # For example, check that MUCAPE.magnitude is a positive float
+    # Check that MUCAPE.magnitude is a positive float
     assert MUCAPE.magnitude >= 0
 
     # Check that EL.magnitude is a positive float
@@ -366,6 +492,15 @@ def test_calc_skewt_param_extra():
 
 
 def test_calculate_skewt_parameters():
+    '''
+    Test the retrive of the all Skew T-logP parameter. I expect to obtain
+    a dictionary and the key parameter should not be empty.
+
+
+    Author
+    --------
+    Christian Brida
+    '''
     # Create some sample data
     time = '2018-08-18T12:00'
     lon = 10.0
@@ -383,8 +518,8 @@ def test_calculate_skewt_parameters():
         'ML_LCL', 'ML_LFC', 'ML_LI', 'ML_CAPE', 'ML_CIN',
         'SB_LCL', 'SB_LFC', 'SB_LI', 'SB_CAPE', 'SB_CIN',
         'RM_DIR', 'RM_SPEED', 'SHEAR_1KM', 'SHEAR_6KM',
-        'SRH_1km_tot', 'SRH_3km_tot', 'MUCAPE', 'EL', 'CAPE_strenght', 'K_INDEX'
-    ]
+        'SRH_1km_tot', 'SRH_3km_tot',
+        'MUCAPE', 'EL', 'CAPE_strenght', 'K_INDEX']
 
     for key in expected_keys:
         assert key in parameters_dict

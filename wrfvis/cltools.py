@@ -27,6 +27,8 @@ Usage:
 HELP_SKEWT = """wrfvis_skewt: Visualization of WRF output at a single selected grid cell of
 Skew T-logP diagram. You can select a single timestamp and get the diagram with wind profile, 
 hodograph and inidices or compare different diagrams at 2 different timestamps or averaging a time range.
+
+Author: Christian Brida
             
 
 Usage:
@@ -87,7 +89,11 @@ def gridcell(args):
 
 
 def skewt(args):
-    '''The actual wrfvis_gridcell command line tool.
+    '''The actual wrfvis_skewt command line tool.
+    You can visualize one single Skew T-logP diagram
+    with some derived parameters or yoy can visualize
+    a comparison between two different timestamps and 
+    the average diagrams insite the time range.
 
     Author
     ----------
@@ -100,7 +106,11 @@ def skewt(args):
 
     Examples
     --------
+    To run a single Skew T-logP diagram:
     wrfvis_skewt -l 11 45 -t 2018-08-18T12:00
+    To run a comparison of Skew T-logP diagrams 
+    between two timestamps:
+    wrfvis_skewt -l 11 45 -t 2018-08-18T12:00 12
 
     '''
 

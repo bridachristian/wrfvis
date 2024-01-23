@@ -48,16 +48,6 @@ def test_plot_skewt(tmpdir):
     Author
     ----------
     Christian Brida
-
-    Parameters
-    ----------
-    tmpdir : TYPE
-        DESCRIPTION.
-
-    Returns
-    -------
-    None.
-
     '''
 
     time = '2018-08-18T12:00'
@@ -79,16 +69,6 @@ def test_plot_hodograph(tmpdir):
     Author
     ----------
     Christian Brida
-
-    Parameters
-    ----------
-    tmpdir : TYPE
-        DESCRIPTION.
-
-    Returns
-    -------
-    None.
-
     '''
 
     time = '2018-08-18T12:00'
@@ -110,16 +90,6 @@ def test_plot_wind_profile(tmpdir):
     Author
     ----------
     Christian Brida
-
-    Parameters
-    ----------
-    tmpdir : TYPE
-        DESCRIPTION.
-
-    Returns
-    -------
-    None.
-
     '''
 
     time = '2018-08-18T12:00'
@@ -141,16 +111,6 @@ def test_plot_skewt_deltatime(tmpdir):
     Author
     ----------
     Christian Brida
-
-    Parameters
-    ----------
-    tmpdir : TYPE
-        DESCRIPTION.
-
-    Returns
-    -------
-    None.
-
     '''
 
     time = '2018-08-18T12:00'
@@ -172,16 +132,6 @@ def test_plot_skewt_averaged(tmpdir):
     Author
     ----------
     Christian Brida
-
-    Parameters
-    ----------
-    tmpdir : TYPE
-        DESCRIPTION.
-
-    Returns
-    -------
-    None.
-
     '''
 
     time = '2018-08-18T12:00'
