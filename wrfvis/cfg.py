@@ -2,7 +2,8 @@
 import os
 
 # wrfout = r"C:\Users\Johanna Schramm\OneDrive - uibk.ac.at\Scientific Programming\Project\wrfvis_all\wrfvis_all\ffff\WRF_output_project.nc"
-wrfout = "C:/Users/lenaz/Desktop/MA_1_Semester/Programming/Unit8/WRF_output_project.nc"
+#wrfout = "C:/Users/lenaz/Desktop/MA_1_Semester/Programming/Unit8/WRF_output_project.nc"
+wrfout = "C:/Users/Christian/OneDrive/Desktop/Family/Christian/MasterMeteoUnitn/Corsi/3_terzo_semestre/ScientificProgramming/Project/WRF_output_project.nc"
 
 # location of data directory
 pkgdir = os.path.dirname(__file__)

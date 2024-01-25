@@ -321,9 +321,7 @@ def wrfvis_cross():
 
 
 def wrfvis_skewt():
-    """Entry point for the wrfvis_skewt application script"""
+    """Entry point for the wrfvis_skewt application script
     Author: Christian Brida"""                        
 
-    # Minimal code because we don't want to test for sys.argv
-    # (we could, but this is way above the purpose of this package
     skewt(sys.argv[1:])
