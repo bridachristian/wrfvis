@@ -425,7 +425,6 @@ def plot_wind_profile(time, lon, lat, filepath=None):
 
     return fig
 
-
 def plot_skewt_deltatime(time, lat, lon, deltatime=24, filepath=None):
     '''
     Plot basic Skew T-logP plot for 2 different timestamp.

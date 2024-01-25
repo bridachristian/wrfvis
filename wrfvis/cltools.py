@@ -66,11 +66,10 @@ Usage:
 
 # Author: Christian Brida
 HELP_SKEWT = """wrfvis_skewt: Visualization of WRF output at a single selected grid cell of
-Skew T-logP diagram. You can select a single timestamp and get the diagram with wind profile, 
+Skew T-logP diagram. You can select a single timestamp and get the diagram with wind profile,
 hodograph and inidices or compare different diagrams at 2 different timestamps or averaging a time range.
 
-Author: Christian Brida
-            
+ Author: Christian Brida                     
 
 Usage:
    -h_skewt, --help_skewt           : print the help
@@ -322,9 +321,8 @@ def wrfvis_cross():
 
 
 def wrfvis_skewt():
-    """Entry point for the wrfvis_skewt application script
-    
-    Author: Christian Brida"""
+    """Entry point for the wrfvis_skewt application script"""
+    Author: Christian Brida"""                        
 
     # Minimal code because we don't want to test for sys.argv
     # (we could, but this is way above the purpose of this package

@@ -59,13 +59,38 @@ def test_write_html_map(tmpdir, capsys):
     assert 'Extracting values at specified time' in captured.out
 
 
+def test_write_html_cross(tmpdir, capsys):
+    '''Author:LenaZelger'''
+    outpath = core.write_html_cross(
+        'T', 2, 20, 20, 1000, None)  # param, time, lat, lon, zagl,
+    assert os.path.exists(outpath)
+    captured = capsys.readouterr()
+    assert 'Extracting data for selected crosssection location and time' in captured.out
+
+
 def test_mkdir(tmpdir):
 
     dir = str(tmpdir.join('html_dir'))
     core.mkdir(dir)
     assert os.path.isdir(dir)
-    
- def test_write_html_skewt():
+
+
+def test_get_wrf_for_cross_invalid_input():
+    '''Author:Lena Zelger'''
+    # Test with invalid dimension parameter T2
+    with pytest.raises(ValueError, match="cannot create a crosssection if height dimension missing"):
+        core.get_wrf_for_cross('T2', '2018-08-18T12:00',
+                               lat=None, lon=None, hgt=None)
+
+
+def test_get_wrf_for_cross_invalid_input():
+    '''Author:Lena Zelger'''
+    # Test with invalid parameter
+    with pytest.raises(ValueError, match="test_parameter not found in the WRF output file or invalid variable."):
+        core.get_wrf_for_cross('test_parameter', '2018-08-18T12:00',
+                               lat=None, lon=None, hgt=None)
+                           
+def test_write_html_skewt():
     ''' Test if html file is created and if there is specific content inside
 
     Author:Christian Brida

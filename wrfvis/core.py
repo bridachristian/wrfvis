@@ -575,7 +575,7 @@ def write_html_skewt(time, lon, lat, directory=None):
             lines = infile.readlines()
             out = []
             for txt in lines:
-                # Replace placeholders in the template with actual values
+                ''' Coordinates'''
                 txt = txt.replace('[LAT]', f'{lat}')
                 txt = txt.replace('[LON]', f'{lon}')
                 txt = txt.replace('[TIME]', f'{time}')
@@ -583,7 +583,7 @@ def write_html_skewt(time, lon, lat, directory=None):
                 # Replace parameters in the template
                 for key, value in parameters.items():
                     txt = txt.replace(f'[{key}]', f'{value}')
-
+              
                 out.append(txt)
             with open(outpath, 'w') as outfile:
                 outfile.writelines(out)

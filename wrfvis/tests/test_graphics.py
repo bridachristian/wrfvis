@@ -58,8 +58,27 @@ def test_plot_map(tmpdir):
     assert os.path.exists(fpath)
 
     plt.close()
-    
- def test_plot_skewt(tmpdir):
+
+
+def test_plot_cross(tmpdir):
+    '''Author:Lena Zelger'''
+    # load test dataset
+    df = pd.read_pickle(cfg.test_cross)
+
+    # Check that title text is found in figure
+    fig = graphics.plot_cross(df, False)
+    ref = 'Cross-Section at Latitude: {lat_value} $^{{\circ}}$'
+    test = [ref in t.get_text() for t in fig.findobj(mpl.text.Text)]
+    assert np.any(test)
+
+    # Check that figure is created
+    fpath = str(tmpdir.join('cross.png'))
+    graphics.plot_cross(df, False, filepath=fpath)
+    assert os.path.exists(fpath)
+
+    plt.close()
+
+def test_plot_skewt(tmpdir):
     '''
     Check that figure is created
 
@@ -152,3 +171,4 @@ def test_plot_skewt_averaged(tmpdir):
     assert os.path.exists(fpath)
 
     plt.close()
+

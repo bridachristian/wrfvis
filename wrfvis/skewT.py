@@ -375,8 +375,7 @@ def calc_skewt(T, T00, P, PB, QVAPOR, U, V):
     elif isinstance(T, pd.Series):
         theta = T + T00[0]
     elif isinstance(T, float):
-        theta = T + T00
-
+        theta = T + T00                         
     else:
         print("data_df is neither a DataFrame nor a Series")
 
